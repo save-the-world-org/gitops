@@ -1,0 +1,102 @@
+{{- if .Values.image.digest }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.replicas }}
+  {{- if .Values.storage }}
+  # A volume can be mounted by one pod at a time: replace pods, don't overlap them.
+  strategy:
+    type: Recreate
+  {{- end }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ .Release.Name }}
+      {{- with .Values.envVersion }}
+      annotations:
+        infrared.darkshift.io/env-version: {{ . | quote }}
+      {{- end }}
+    spec:
+      {{- with .Values.tenancy }}
+      {{- /* What the install requires of every pod in a zone (its tenancy.tenantPods): Infrared keeps it in the zone's values file. */}}
+      {{- if hasKey . "automountServiceAccountToken" }}
+      automountServiceAccountToken: {{ .automountServiceAccountToken }}
+      {{- end }}
+      {{- with .runtimeClassName }}
+      runtimeClassName: {{ . | quote }}
+      {{- end }}
+      {{- with .nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- end }}
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: web
+          image: "{{ .Values.image.repository }}@{{ .Values.image.digest }}"
+          env:
+            - name: PORT
+              value: "{{ .Values.port }}"
+            # The container's memory limit in bytes: a Go service sets GOMEMLIMIT
+            # to about 90 percent of it, so it collects garbage before the kernel
+            # kills the pod.
+            - name: MEMORY_LIMIT
+              valueFrom:
+                resourceFieldRef:
+                  resource: limits.memory
+            {{- range .Values.env }}
+            - name: {{ .name | quote }}
+              value: {{ .value | quote }}
+            {{- end }}
+          envFrom:
+            - secretRef:
+                name: {{ .Release.Name }}-env
+                optional: true
+          ports:
+            - name: http
+              containerPort: {{ .Values.port }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.healthPath }}
+              port: http
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.healthPath }}
+              port: http
+            initialDelaySeconds: 10
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: [ALL]
+          {{- if .Values.storage }}
+          volumeMounts:
+            {{- range .Values.storage }}
+            - name: {{ .name }}
+              mountPath: {{ .mountPath }}
+            {{- end }}
+          {{- end }}
+      {{- if .Values.storage }}
+      volumes:
+        {{- range .Values.storage }}
+        - name: {{ .name }}
+          persistentVolumeClaim:
+            claimName: {{ $.Release.Name }}-{{ .name }}
+        {{- end }}
+      {{- end }}
+{{- end }}
