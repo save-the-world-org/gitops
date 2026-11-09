@@ -14,9 +14,9 @@ metadata:
 spec:
   project: products
   sources:
-    - repoURL: https://github.com/save-the-world-org/gitops
-      targetRevision: main
-      path: products/hero-goggles/chart
+    - repoURL: https://github.com/save-the-world-org/charts
+      targetRevision: hero-goggles-0.2.0
+      path: charts/hero-goggles
       helm:
         releaseName: hero-goggles
         valueFiles:
