@@ -5,12 +5,12 @@ image:
   tag: ""
   digest: ""
 preview:
-  host: "influence-production.darkshift.cloud"
-  authService: "infrared-api"
-  authNamespace: "infrared"
-  authPort: 8080
-  authPath: "/v1/auth/preview/envoy"
-  public: false
+  host: "influence.darkshift.cloud"
+  authService: ""
+  authNamespace: ""
+  authPort: 0
+  authPath: ""
+  public: true
 tenancy:
   automountServiceAccountToken: false
   nodeSelector:
