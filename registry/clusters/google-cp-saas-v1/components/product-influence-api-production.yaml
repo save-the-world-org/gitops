@@ -1,0 +1,47 @@
+# Zone influence-api-production of influence-api: the generic chart in products/influence-api/chart with this
+# zone's values (including the image pin). Scaffolded by Infrared.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: product-influence-api-production
+  namespace: argocd
+  labels:
+    app.kubernetes.io/part-of: infrared-products
+    infrared.darkshift.io/product: influence-api
+    infrared.darkshift.io/zone: influence-api-production
+  annotations:
+    argocd.argoproj.io/sync-wave: "60"
+spec:
+  project: products
+  sources:
+    - repoURL: https://github.com/save-the-world-org/gitops
+      targetRevision: main
+      path: products/influence-api/chart
+      helm:
+        releaseName: influence-api
+        valueFiles:
+          - $values/products/influence-api/zones/influence-api-production/values.yaml
+    - repoURL: https://github.com/save-the-world-org/gitops
+      targetRevision: main
+      ref: values
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: influence-api-production
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    managedNamespaceMetadata:
+      labels:
+        pod-security.kubernetes.io/enforce: restricted
+        infrared.darkshift.io/product: influence-api
+        infrared.darkshift.io/zone: influence-api-production
+        infrared.darkshift.io/org: save-the-world-org
+    syncOptions:
+      - CreateNamespace=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 3m
