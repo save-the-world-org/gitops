@@ -21,3 +21,46 @@ tenancy:
     key: infrared.darkshift.io/tenants
     operator: Equal
     value: "true"
+influence-api:
+  tenancy:
+    automountServiceAccountToken: false
+    nodeSelector:
+      infrared.darkshift.io/pool: tenants
+    runtimeClassName: gvisor
+    tolerations:
+    - effect: NoSchedule
+      key: infrared.darkshift.io/tenants
+      operator: Equal
+      value: "true"
+  preview:
+    host: "influence-api.darkshift.cloud"
+    authService: ""
+    authNamespace: ""
+    authPort: 0
+    authPath: ""
+    public: true
+  env:
+    - name: ES_URL
+      value: "http://elasticsearch.save-the-world-search.svc:9200"
+    - name: OTEL_SERVICE_NAME
+      value: "influence-api"
+    - name: OTEL_EXPORTER_OTLP_ENDPOINT
+      value: "https://ingress.us-west-2.aws.dash0.com"
+    - name: OTEL_EXPORTER_OTLP_PROTOCOL
+      value: "http/protobuf"
+    - name: OTEL_TRACES_EXPORTER
+      value: "otlp"
+    - name: OTEL_METRICS_EXPORTER
+      value: "otlp"
+    - name: OTEL_LOGS_EXPORTER
+      value: "none"
+    - name: OTEL_NODE_RESOURCE_DETECTORS
+      value: "env,host,os,process,serviceinstance"
+    - name: OTEL_NODE_DISABLED_INSTRUMENTATIONS
+      value: "fs,dns,net"
+    - name: OTEL_RESOURCE_ATTRIBUTES
+      value: "deployment.environment.name=production,service.namespace=save-the-world-org"
+    - name: OTEL_LOG_LEVEL
+      value: "warn"
+  envVersion: "2026-11-09T21:34:28.686541498Z"
+  healthPath: "/healthz"
