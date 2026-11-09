@@ -1,0 +1,47 @@
+# Zone hero-goggles-docs-production of hero-goggles-docs: the generic chart in products/hero-goggles-docs/chart with this
+# zone's values (including the image pin). Scaffolded by Infrared.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: product-hero-goggles-docs-production
+  namespace: argocd
+  labels:
+    app.kubernetes.io/part-of: infrared-products
+    infrared.darkshift.io/product: hero-goggles-docs
+    infrared.darkshift.io/zone: hero-goggles-docs-production
+  annotations:
+    argocd.argoproj.io/sync-wave: "60"
+spec:
+  project: products
+  sources:
+    - repoURL: https://github.com/save-the-world-org/gitops
+      targetRevision: main
+      path: products/hero-goggles-docs/chart
+      helm:
+        releaseName: hero-goggles-docs
+        valueFiles:
+          - $values/products/hero-goggles-docs/zones/hero-goggles-docs-production/values.yaml
+    - repoURL: https://github.com/save-the-world-org/gitops
+      targetRevision: main
+      ref: values
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: hero-goggles-docs-production
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    managedNamespaceMetadata:
+      labels:
+        pod-security.kubernetes.io/enforce: restricted
+        infrared.darkshift.io/product: hero-goggles-docs
+        infrared.darkshift.io/zone: hero-goggles-docs-production
+        infrared.darkshift.io/org: save-the-world-org
+    syncOptions:
+      - CreateNamespace=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 3m
