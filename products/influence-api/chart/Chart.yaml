@@ -1,0 +1,5 @@
+apiVersion: v2
+name: influence-api
+description: Generic web chart Infrared scaffolded for influence-api. Edit freely.
+type: application
+version: 0.1.0
