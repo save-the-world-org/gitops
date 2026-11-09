@@ -24,3 +24,4 @@ tenancy:
 env:
   - name: ES_URL
     value: "http://elasticsearch.save-the-world-search.svc:9200"
+envVersion: "2026-11-09T19:31:57.986446683Z"
