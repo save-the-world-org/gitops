@@ -1,0 +1,23 @@
+# Zone influence-production (Release) of influence, scaffolded by Infrared. Releases pin image.* here.
+zone: influence-production
+image:
+  repository: 10.110.0.50:5000/save-the-world-org/influence
+  tag: ""
+  digest: ""
+preview:
+  host: "influence-production.darkshift.cloud"
+  authService: "infrared-api"
+  authNamespace: "infrared"
+  authPort: 8080
+  authPath: "/v1/auth/preview/envoy"
+  public: false
+tenancy:
+  automountServiceAccountToken: false
+  nodeSelector:
+    infrared.darkshift.io/pool: tenants
+  runtimeClassName: gvisor
+  tolerations:
+  - effect: NoSchedule
+    key: infrared.darkshift.io/tenants
+    operator: Equal
+    value: "true"
