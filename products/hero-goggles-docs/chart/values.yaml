@@ -1,0 +1,46 @@
+# Each zone's values file (products/<product>/zones/<zone>/values.yaml) sets these.
+image:
+  repository: ""
+  tag: ""
+  # Empty until the first Release pins a digest: no Deployment until then.
+  digest: ""
+replicas: 1
+port: 8080
+healthPath: /
+# Reserved for each pod; Infrared sets these from the zone's settings.
+resources:
+  requests:
+    cpu: 20m
+    memory: 64Mi
+  limits:
+    memory: 256Mi
+# Persistent volumes, each mounted into the app: [{name, size, mountPath}].
+storage: []
+preview:
+  # https host; empty means no route.
+  host: ""
+  # Envoy asks Infrared's API before each request (Infrared sign-in): the API's
+  # Service, its namespace and port, and the path of the check, in front of
+  # which Envoy puts the request's own path.
+  authService: ""
+  authNamespace: ""
+  authPort: 0
+  authPath: ""
+  # true opens the host to anyone, without the sign-in check.
+  public: false
+  # More addresses, on the same route. The Gateway's listener serves the
+  # names one level under the platform domain; the others are served by
+  # listenerSet, the ListenerSet Infrared keeps for the zone in the Gateway's
+  # namespace, with a listener and a certificate for each address.
+  hosts: []
+  listenerSet: ""
+  # Addresses that send visitors to canonical, with a permanent redirect that
+  # keeps the path (www to the bare domain).
+  redirects: []
+  canonical: ""
+# The platform's Gateway the zone's route attaches to: the gitops template's
+# edge, whose listener https admits routes from zone namespaces.
+gateway:
+  name: edge
+  namespace: envoy-gateway-system
+  sectionName: https

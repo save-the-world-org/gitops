@@ -1,0 +1,23 @@
+# Zone hero-goggles-docs-production (Release) of hero-goggles-docs, scaffolded by Infrared. Releases pin image.* here.
+zone: hero-goggles-docs-production
+image:
+  repository: 10.110.0.50:5000/save-the-world-org/hero-goggles-docs
+  tag: ""
+  digest: ""
+preview:
+  host: "hero-goggles-docs-production.darkshift.cloud"
+  authService: "infrared-api"
+  authNamespace: "infrared"
+  authPort: 8080
+  authPath: "/v1/auth/preview/envoy"
+  public: false
+tenancy:
+  automountServiceAccountToken: false
+  nodeSelector:
+    infrared.darkshift.io/pool: tenants
+  runtimeClassName: gvisor
+  tolerations:
+  - effect: NoSchedule
+    key: infrared.darkshift.io/tenants
+    operator: Equal
+    value: "true"
