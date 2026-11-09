@@ -1,0 +1,36 @@
+# The AppProject for the org's products, created by Infrared when it scaffolded
+# a Product and the gitops repo had none. Applications in it deploy only from
+# this gitops repo and the org's own repos, into the builds namespace and each
+# Product's zone namespaces (<product>-*). Namespace is the only cluster-scoped
+# kind they may create. They may not create a Gateway or an EnvoyProxy: an
+# EnvoyProxy sets the pods Envoy Gateway runs for a Gateway, so a zone could run
+# any pod. Zones route through the platform's Gateway. Infrared adds each new
+# Product's destination below and never rewrites the rest of this file.
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: products
+  namespace: argocd
+  labels:
+    app.kubernetes.io/part-of: infrared-products
+spec:
+  description: Products of save-the-world-org, delivered by Infrared
+  sourceRepos:
+    - https://github.com/save-the-world-org/gitops
+    - https://github.com/save-the-world-org/*
+  destinations:
+    - server: https://kubernetes.default.svc
+      namespace: builds
+    - server: https://kubernetes.default.svc
+      namespace: influence-*
+  clusterResourceWhitelist:
+    - group: ""
+      kind: Namespace
+  namespaceResourceWhitelist:
+    - group: "*"
+      kind: "*"
+  namespaceResourceBlacklist:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+    - group: gateway.envoyproxy.io
+      kind: EnvoyProxy
