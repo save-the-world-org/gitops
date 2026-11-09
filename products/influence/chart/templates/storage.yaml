@@ -1,0 +1,16 @@
+{{- range .Values.storage }}
+# Each zone's own volume. Argo CD never prunes it, so removing it from the
+# zone's settings keeps the data; delete the claim by hand to free it.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ $.Release.Name }}-{{ .name }}
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false
+spec:
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: {{ .size }}
+---
+{{- end }}
