@@ -2,8 +2,8 @@
 zone: influence-api-production
 image:
   repository: 10.110.0.50:5000/save-the-world-org/influence-api
-  tag: v0.1.6
-  digest: sha256:e4b1e3d3dddc8615409e8dcbd2119784c3c14b1f60ee1053168f6841144e4787
+  tag: v0.1.7
+  digest: sha256:951486c5c4ad008e895514050895addfbf2665c3d03f1cf5ffd56e4e5d90c8ee
 preview:
   host: "influence-api.darkshift.cloud"
   authService: ""
