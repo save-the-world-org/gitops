@@ -21,3 +21,6 @@ tenancy:
     key: infrared.darkshift.io/tenants
     operator: Equal
     value: "true"
+env:
+  - name: ES_URL
+    value: "http://elasticsearch.save-the-world-search.svc:9200"
