@@ -1,0 +1,5 @@
+apiVersion: v2
+name: hero-goggles
+description: Generic web chart Infrared scaffolded for hero-goggles. Edit freely.
+type: application
+version: 0.1.0

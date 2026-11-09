@@ -1,0 +1,30 @@
+# hero-goggles's build: the kpack Image in products/hero-goggles/build. Scaffolded by Infrared.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: product-hero-goggles-build
+  namespace: argocd
+  labels:
+    app.kubernetes.io/part-of: infrared-products
+    infrared.darkshift.io/product: hero-goggles
+  annotations:
+    argocd.argoproj.io/sync-wave: "50"
+spec:
+  project: products
+  source:
+    repoURL: https://github.com/save-the-world-org/gitops
+    targetRevision: main
+    path: products/hero-goggles/build
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: builds-save-the-world-org
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    retry:
+      limit: 5
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 3m

@@ -20,6 +20,8 @@ spec:
     - https://github.com/save-the-world-org/*
   destinations:
     - server: https://kubernetes.default.svc
+      namespace: hero-goggles-*
+    - server: https://kubernetes.default.svc
       namespace: influence-api-*
     - server: https://kubernetes.default.svc
       namespace: builds
