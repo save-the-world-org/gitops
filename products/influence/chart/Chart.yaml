@@ -1,5 +1,0 @@
-apiVersion: v2
-name: influence
-description: Generic web chart Infrared scaffolded for influence. Edit freely.
-type: application
-version: 0.1.0
