@@ -2,8 +2,8 @@
 zone: influence-production
 image:
   repository: 10.110.0.50:5000/save-the-world-org/influence
-  tag: v0.1.0
-  digest: sha256:64ea59e78cb9853ad00b912ca7d2f25f1b18453f7e059e4da030f5996a63c76e
+  tag: v0.1.1
+  digest: sha256:f62c092db5b15c5f769b0943234c8903805e720f622f0a7689d83a1a42676bf3
 preview:
   host: "influence.darkshift.cloud"
   authService: ""
