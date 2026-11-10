@@ -15,7 +15,7 @@ spec:
   project: products
   sources:
     - repoURL: https://github.com/save-the-world-org/charts
-      targetRevision: hero-goggles-0.2.1
+      targetRevision: hero-goggles-0.2.2
       path: charts/hero-goggles
       helm:
         releaseName: hero-goggles
