@@ -22,3 +22,4 @@
 {"at":"2026-11-09T23:32:45.310209141Z","by":"token:dietz-hackathon-stw-org","product":"hero-goggles","op":"replace-product","what":"Set the repo releases tag to hero-goggles"}
 {"at":"2026-11-09T23:32:45.310209141Z","by":"token:dietz-hackathon-stw-org","product":"hero-goggles","op":"replace-product","what":"Changed the scaffold"}
 {"at":"2026-11-09T23:32:45.310209141Z","by":"token:dietz-hackathon-stw-org","product":"hero-goggles","zone":"hero-goggles-production","op":"replace-product","what":"Changed hero-goggles-production's components"}
+{"at":"2026-11-10T05:12:56.561048753Z","by":"someone signed in with Google","product":"hero-goggles","op":"upload-product-logo","what":"Uploaded a new logo"}
