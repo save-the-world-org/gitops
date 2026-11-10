@@ -2,8 +2,8 @@
 zone: hero-goggles-production
 image:
   repository: 10.110.0.50:5000/save-the-world-org/hero-goggles
-  tag: v0.2.2
-  digest: sha256:d3b47f82f3fa7e27f7c3e5f64b94b3292984fd63569975210e28d9f5fd94bb68
+  tag: v0.2.3
+  digest: sha256:56e2cabcfe7ca1994b273af201e5a0288e1accda8dfb87eca4a59876d4601f77
 preview:
   host: "hero-goggles.darkshift.cloud"
   authService: ""
